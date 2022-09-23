@@ -1,13 +1,17 @@
 mod application;
 mod domain;
 mod infrastructure;
+mod modules;
 mod presentation;
 
 use crate::infrastructure::config::CONFIG;
+use crate::modules::Modules;
 
 use actix_cors::Cors;
-use actix_web::{http, middleware::Logger, App, HttpServer};
+use actix_web::{http, middleware::Logger, web::Data, App, HttpServer};
 use dotenv::dotenv;
+use sqlx::PgPool;
+use std::sync::Arc;
 
 #[actix_web::main]
 async fn main() -> Result<(), std::io::Error> {
@@ -18,6 +22,10 @@ async fn main() -> Result<(), std::io::Error> {
     let port = &CONFIG.port;
     let database_url = &CONFIG.database_url;
     let frontend_origin = &CONFIG.frontend_origin;
+
+    let pool = PgPool::connect(database_url).await.unwrap();
+
+    let modules = Arc::new(Modules::new(pool));
 
     HttpServer::new(move || {
         let cors = Cors::default()
@@ -30,9 +38,11 @@ async fn main() -> Result<(), std::io::Error> {
             .max_age(3_600);
 
         App::new()
+            .app_data(Data::new(modules.clone()))
             .wrap(Logger::default())
             .wrap(cors)
             .configure(presentation::index::init)
+            .configure(presentation::users::init)
     })
     .bind(format!("{}:{}", host, port))?
     .run()

@@ -16,7 +16,7 @@ pub struct Claims {
     pub exp: i64,
 }
 
-#[derive(new, Debug)]
+#[derive(new, Debug, Serialize)]
 pub struct Tokens {
     pub access_token: String,
     pub refresh_token: String,

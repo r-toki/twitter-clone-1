@@ -1,4 +1,4 @@
-use super::jwt::{decode_access_token, decode_refresh_token, Auth, Claims};
+use crate::application::jwt::{decode_access_token, decode_refresh_token, Auth, Claims};
 
 use actix_web::{error::ErrorUnauthorized, http::header, FromRequest};
 use anyhow::Result;

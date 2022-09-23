@@ -20,14 +20,10 @@ pub struct User {
 }
 
 impl User {
-    pub fn create(
-        name: String,
-        password_hash: String,
-        refresh_token_hash: Option<String>,
-    ) -> anyhow::Result<Self> {
+    pub fn create(name: String, password_hash: String) -> anyhow::Result<Self> {
         let id = get_new_id();
         let now = get_current_date_time();
-        let user = User::new(id, name, password_hash, refresh_token_hash, now, now);
+        let user = User::new(id, name, password_hash, None, now, now);
         user.validate()?;
         Ok(user)
     }
