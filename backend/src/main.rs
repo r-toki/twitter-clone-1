@@ -29,7 +29,10 @@ async fn main() -> Result<(), std::io::Error> {
             ])
             .max_age(3_600);
 
-        App::new().wrap(Logger::default()).wrap(cors)
+        App::new()
+            .wrap(Logger::default())
+            .wrap(cors)
+            .configure(presentation::index::init)
     })
     .bind(format!("{}:{}", host, port))?
     .run()
