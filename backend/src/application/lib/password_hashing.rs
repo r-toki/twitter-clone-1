@@ -11,9 +11,9 @@ pub fn hash(password: &str) -> String {
         .to_string()
 }
 
-pub fn verify(password: &str, hashed_password: &str) -> anyhow::Result<()> {
-    let hashed_password = PasswordHash::new(&hashed_password).map_err(|_| anyhow::anyhow!(""))?;
+pub fn verify(password: &str, password_hash: &str) -> anyhow::Result<()> {
+    let password_hash = PasswordHash::new(&password_hash).unwrap();
     Argon2::default()
-        .verify_password(password.as_bytes(), &hashed_password)
+        .verify_password(password.as_bytes(), &password_hash)
         .map_err(|_| anyhow::anyhow!("could not verify"))
 }
