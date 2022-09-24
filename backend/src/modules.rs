@@ -1,8 +1,11 @@
+use crate::application::auth_service::AuthService;
+use crate::infrastructure::user_repository_impl::UserRepositoryImpl;
+
+use actix_web::web::Data;
 use sqlx::PgPool;
 use std::sync::Arc;
 
-use crate::application::auth_service::AuthService;
-use crate::infrastructure::user_repository_impl::UserRepositoryImpl;
+pub type ModulesExt = Data<Arc<Modules>>;
 
 #[derive(Debug, Clone)]
 pub struct Modules {

@@ -29,6 +29,21 @@ where id = $1
         .map_err(|e| e.into())
     }
 
+    async fn find_by_name(&self, name: String) -> anyhow::Result<User> {
+        query_as!(
+            UserRow,
+            r#"
+select * from users
+where name = $1
+            "#,
+            name
+        )
+        .fetch_one(&*self.pool)
+        .await
+        .map(|user_row| user_row.into())
+        .map_err(|e| e.into())
+    }
+
     async fn store(&self, user: User) -> anyhow::Result<()> {
         let user_row: UserRow = user.into();
         query!(

@@ -41,6 +41,7 @@ impl User {
 #[async_trait]
 pub trait UserRepository {
     async fn find(&self, id: String) -> anyhow::Result<User>;
+    async fn find_by_name(&self, name: String) -> anyhow::Result<User>;
     async fn store(&self, user: User) -> anyhow::Result<()>;
     // async fn delete(&self, id: String) -> anyhow::Result<()>;
 }
