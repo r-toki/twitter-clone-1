@@ -1,8 +1,9 @@
 import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react';
+import { ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
 
 type FieldWrapperProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   label?: string;
   error?: FieldError;
 };
