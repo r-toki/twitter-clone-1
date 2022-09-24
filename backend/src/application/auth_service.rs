@@ -48,7 +48,7 @@ impl<R: UserRepository> AuthService<R> {
         self.user_repository.store(user).await
     }
 
-    pub async fn refresh(&self, auth: Auth, refresh_token: String) -> anyhow::Result<(Tokens)> {
+    pub async fn refresh(&self, auth: Auth, refresh_token: String) -> anyhow::Result<Tokens> {
         let mut user = self.user_repository.find(auth.user_id).await?;
 
         let refresh_token_hash = user

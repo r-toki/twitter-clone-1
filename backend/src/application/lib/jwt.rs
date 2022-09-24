@@ -17,6 +17,7 @@ pub struct Claims {
 }
 
 #[derive(new, Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Tokens {
     pub access_token: String,
     pub refresh_token: String,
