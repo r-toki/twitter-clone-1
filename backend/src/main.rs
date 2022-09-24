@@ -33,6 +33,7 @@ async fn main() -> Result<(), std::io::Error> {
             .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
             .allowed_headers(vec![
                 http::header::AUTHORIZATION,
+                http::header::ACCEPT,
                 http::header::CONTENT_TYPE,
             ])
             .max_age(3_600);

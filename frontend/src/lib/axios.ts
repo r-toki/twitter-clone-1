@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import Axios, { AxiosError } from 'axios';
 
 import storage from '@/util/storage';
 
@@ -12,6 +12,7 @@ axios.interceptors.request.use((config) => {
     config.headers.authorization = `Bearer ${accessToken}`;
   }
 
+  config.headers['accept'] = 'application/json';
   config.headers['content-type'] = 'application/json';
 
   return config;
@@ -21,7 +22,7 @@ axios.interceptors.response.use(
   (res) => {
     return res.data;
   },
-  (err) => {
+  (err: AxiosError) => {
     return Promise.reject(err);
   },
 );
