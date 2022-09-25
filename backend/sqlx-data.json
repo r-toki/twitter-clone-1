@@ -116,5 +116,25 @@
       }
     },
     "query": "\ninsert into users (id, name, password_hash, refresh_token_hash, created_at, updated_at)\nvalues ($1, $2, $3, $4, $5, $6)\non conflict (id)\ndo update\nset name = $2, password_hash = $3, refresh_token_hash = $4, created_at = $5, updated_at = $6\n        "
+  },
+  "725bac67dd99412a8e43e2c38eac123e9b4d6d3fff2a636b80c545eaed794b31": {
+    "describe": {
+      "columns": [
+        {
+          "name": "name",
+          "ordinal": 0,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "\nselect name from users\nwhere id = $1\n        "
   }
 }

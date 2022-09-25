@@ -1,9 +1,9 @@
-use crate::application::jwt::Tokens;
-use crate::modules::ModulesExt;
-use crate::presentation::lib::{
+use super::super::lib::{
     error::Error,
     jwt_extractor::{AccessTokenDecoded, BearerToken, RefreshTokenDecoded},
 };
+use crate::application::jwt::Tokens;
+use crate::modules::ModulesExt;
 
 use actix_web::{
     delete, post, put,
@@ -26,7 +26,7 @@ struct Create {
 #[post("/users/sessions")]
 async fn create(modules: ModulesExt, form: Json<Create>) -> Result<Json<Tokens>, Error> {
     modules
-        .auth_service
+        .auth_command
         .sign_in(form.name.clone(), form.password.clone())
         .await
         .map(Json)
@@ -39,7 +39,7 @@ async fn destroy(
     access_token_decoded: AccessTokenDecoded,
 ) -> Result<Json<()>, Error> {
     modules
-        .auth_service
+        .auth_command
         .sign_out(access_token_decoded.into())
         .await
         .map(Json)
@@ -53,7 +53,7 @@ async fn update(
     refresh_token_decoded: RefreshTokenDecoded,
 ) -> Result<Json<Tokens>, Error> {
     modules
-        .auth_service
+        .auth_command
         .refresh(refresh_token_decoded.into(), refresh_token.into())
         .await
         .map(Json)

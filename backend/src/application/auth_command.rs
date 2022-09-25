@@ -9,11 +9,11 @@ use derive_new::new;
 use std::sync::Arc;
 
 #[derive(new, Debug)]
-pub struct AuthService<R: UserRepository> {
+pub struct AuthCommand<R: UserRepository> {
     user_repository: Arc<R>,
 }
 
-impl<R: UserRepository> AuthService<R> {
+impl<R: UserRepository> AuthCommand<R> {
     pub async fn sign_up(&self, name: String, password: String) -> anyhow::Result<Tokens> {
         let password = Password::new(password)?;
         let mut user = User::create(name, hash(&password.to_string()))?;

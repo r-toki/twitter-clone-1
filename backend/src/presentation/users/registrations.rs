@@ -21,7 +21,7 @@ struct Create {
 #[post("/users/registrations")]
 async fn create(modules: ModulesExt, form: Json<Create>) -> Result<Json<Tokens>, Error> {
     modules
-        .auth_service
+        .auth_command
         .sign_up(form.name.clone(), form.password.clone())
         .await
         .map(Json)

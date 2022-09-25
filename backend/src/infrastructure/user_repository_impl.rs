@@ -1,9 +1,8 @@
+use super::model::UserRow;
 use crate::domain::user::{User, UserRepository};
 
 use async_trait::async_trait;
-use chrono::{DateTime, Utc};
 use derive_new::new;
-use serde::{Deserialize, Serialize};
 use sqlx::{query, query_as, PgPool};
 use std::sync::Arc;
 
@@ -66,16 +65,6 @@ set name = $2, password_hash = $3, refresh_token_hash = $4, created_at = $5, upd
         .map(|_| ())
         .map_err(|e| e.into())
     }
-}
-
-#[derive(new, Debug, Serialize, Deserialize)]
-struct UserRow {
-    pub id: String,
-    pub name: String,
-    pub password_hash: String,
-    pub refresh_token_hash: Option<String>,
-    pub created_at: DateTime<Utc>,
-    pub updated_at: DateTime<Utc>,
 }
 
 impl From<UserRow> for User {
