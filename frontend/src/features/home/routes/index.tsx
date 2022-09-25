@@ -4,6 +4,6 @@ import { Show } from './Show';
 
 export const HomeRoutes = () => (
   <Routes>
-    <Route path="" element={<Show />} />
+    <Route path="/" element={<Show />} />
   </Routes>
 );

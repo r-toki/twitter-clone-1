@@ -1,8 +1,8 @@
-import { HomeRoutes } from '@/features/home/routes';
+import { HomeRoutes } from '@/features/home';
 
 export const protectedRoutes = [
   {
-    path: '',
+    path: '/*',
     element: <HomeRoutes />,
   },
 ];

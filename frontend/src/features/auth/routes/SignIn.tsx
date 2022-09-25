@@ -1,12 +1,13 @@
 import { Box, Button, Center, Divider, Stack } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Form, InputField } from '@/components/Form';
 import { AppHeading } from '@/components/Heading';
 import { Link } from '@/components/Link';
+import { useAuth } from '@/providers/auth';
 
 import { Layout } from '../components';
-import { useSignIn } from '../hooks/use-sign-in';
 
 const schema = z.object({
   name: z
@@ -22,10 +23,12 @@ type RegisterValue = {
 };
 
 export const SignIn = () => {
-  const { signIn } = useSignIn();
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
 
-  const onSubmit = ({ name, password }: RegisterValue) => {
-    signIn(name, password);
+  const onSubmit = async ({ name, password }: RegisterValue) => {
+    await signIn(name, password);
+    navigate('/');
   };
 
   return (

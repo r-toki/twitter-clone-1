@@ -1,33 +1,67 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { axios } from '@/lib/axios';
-import { WithChildren } from '@/types';
+import { Tokens, WithChildren } from '@/types';
 import { assertDefined } from '@/utils/assert-defined';
+import storage from '@/utils/storage';
 
 type User = { name: string };
 
 type State = {
   initialized: boolean;
   user: User | undefined;
-  setUser: (v: User | undefined) => void;
+  signUp: (name: string, password: string) => Promise<void>;
+  signIn: (name: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
 };
 
 const useAuthProvider = () => {
   const [initialized, setInitialized] = useState(false);
   const [user, setUser] = useState<User>();
 
+  const fetchUser = async () => {
+    const { data } = await axios.get<User>('user');
+    setUser(data);
+  };
+
+  const signUp = async (name: string, password: string) => {
+    const { data } = await axios.post<Tokens>('users/registrations', { name, password });
+
+    storage.set('access_token', data.accessToken);
+    storage.set('refresh_token', data.refreshToken);
+
+    await fetchUser();
+  };
+
+  const signIn = async (name: string, password: string) => {
+    const { data } = await axios.post<Tokens>('users/sessions', { name, password });
+
+    storage.set('access_token', data.accessToken);
+    storage.set('refresh_token', data.refreshToken);
+
+    await fetchUser();
+  };
+
+  const signOut = async () => {
+    await axios.delete('users/sessions');
+
+    storage.clear('access_token');
+    storage.clear('refresh_token');
+
+    setUser(undefined);
+  };
+
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get<User>('user');
-        setUser(res.data);
+        await fetchUser();
       } finally {
         setInitialized(true);
       }
     })();
   }, []);
 
-  return { initialized, user, setUser };
+  return { initialized, user, signUp, signIn, signOut };
 };
 
 const AuthContext = createContext<State | undefined>(undefined);
