@@ -42,8 +42,7 @@ async fn main() -> Result<(), std::io::Error> {
             .app_data(Data::new(modules.clone()))
             .wrap(Logger::default())
             .wrap(cors)
-            .configure(presentation::index::init)
-            .configure(presentation::users::init)
+            .configure(presentation::init)
     })
     .bind(format!("{}:{}", host, port))?
     .run()

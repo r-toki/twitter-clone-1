@@ -1,8 +1,9 @@
-import { Button, Center, Divider, Stack } from '@chakra-ui/react';
+import { Box, Button, Center, Divider, Stack } from '@chakra-ui/react';
 import { z } from 'zod';
 
 import { Form, InputField } from '@/components/Form';
 import { AppHeading } from '@/components/Heading';
+import { Link } from '@/components/Link';
 
 import { Layout } from '../components';
 import { useSignUp } from '../hooks/use-sign-up';
@@ -63,10 +64,16 @@ export const SignUp = () => {
 
                 <Divider />
 
-                <Button type="submit">Sign Up</Button>
+                <Button type="submit" colorScheme="blue">
+                  Sign Up
+                </Button>
               </Stack>
             )}
           </Form>
+
+          <Box>
+            <Link to="/auth/sign-in">to Sign In</Link>
+          </Box>
         </Stack>
       </Center>
     </Layout>
