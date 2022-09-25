@@ -1,3 +1,5 @@
+use crate::presentation::lib::jwt_extractor::AccessTokenDecoded;
+
 use actix_web::{
     get,
     web::{Json, ServiceConfig},
@@ -10,7 +12,7 @@ pub fn init(cfg: &mut ServiceConfig) {
 }
 
 #[get("/")]
-async fn index() -> Json<Dto> {
+async fn index(_: AccessTokenDecoded) -> Json<Dto> {
     Json(Dto::new("HELLO WORLD!".into()))
 }
 

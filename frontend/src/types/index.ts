@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 
-// NOTE: For Domains
+// NOTE: for Domains
 export type Tokens = {
   accessToken: string;
   refreshToken: string;
 };
 
-// NOTE: For Components
+// NOTE: for Components
 export type WithChildren = { children: ReactNode };

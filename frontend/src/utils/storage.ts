@@ -1,13 +1,12 @@
+// NOTE: for JWT
+
 const storagePrefix = 'twitter_clone_1_';
 
-type Value = string;
-
 const storage = {
-  get: <T extends Value>(key: string): T | null => {
-    const value = window.localStorage.getItem(storagePrefix + key);
-    return value ? JSON.parse(value) : null;
+  get: (key: string): string | null => {
+    return window.localStorage.getItem(storagePrefix + key);
   },
-  set: <T extends Value>(key: string, value: T) => {
+  set: (key: string, value: string) => {
     window.localStorage.setItem(storagePrefix + key, value);
   },
   clear: (key: string) => {
