@@ -30,8 +30,8 @@ type RegisterValue = {
 };
 
 export const SignUp = () => {
-  const { signUp } = useAuth();
   const navigate = useNavigate();
+  const { signUp } = useAuth();
 
   const onSubmit = async ({ name, password }: RegisterValue) => {
     await signUp(name, password);

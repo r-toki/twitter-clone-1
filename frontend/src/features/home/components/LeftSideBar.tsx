@@ -16,9 +16,9 @@ import { useMe } from '@/hooks/useMe';
 import { useAuth } from '@/providers/auth';
 
 export const LeftSideBar = () => {
+  const navigate = useNavigate();
   const { signOut } = useAuth();
   const { me } = useMe();
-  const navigate = useNavigate();
 
   const onSignOut = async () => {
     await signOut();

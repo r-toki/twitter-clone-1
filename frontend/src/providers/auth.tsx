@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { axios } from '@/lib/axios';
 import { Tokens, WithChildren } from '@/types';
@@ -16,12 +17,20 @@ type State = {
 };
 
 const useAuthProvider = () => {
+  const navigate = useNavigate();
+
   const [initialized, setInitialized] = useState(false);
   const [user, setUser] = useState<User>();
 
   const fetchUser = async () => {
-    const { data } = await axios.get<User>('user');
-    setUser(data);
+    try {
+      const { data } = await axios.get<User>('user');
+      setUser(data);
+    } catch {
+      storage.clear('access_token');
+      storage.clear('refresh_token');
+      navigate('auth/sign-in');
+    }
   };
 
   const signUp = async (name: string, password: string) => {

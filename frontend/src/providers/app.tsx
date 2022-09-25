@@ -7,10 +7,10 @@ import { AuthProvider } from './auth';
 
 export const AppProvider = ({ children }: WithChildren) => {
   return (
-    <ChakraProvider>
+    <BrowserRouter>
       <AuthProvider>
-        <BrowserRouter>{children}</BrowserRouter>
+        <ChakraProvider>{children}</ChakraProvider>
       </AuthProvider>
-    </ChakraProvider>
+    </BrowserRouter>
   );
 };

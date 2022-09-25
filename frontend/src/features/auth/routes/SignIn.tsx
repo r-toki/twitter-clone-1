@@ -23,8 +23,8 @@ type RegisterValue = {
 };
 
 export const SignIn = () => {
-  const { signIn } = useAuth();
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   const onSubmit = async ({ name, password }: RegisterValue) => {
     await signIn(name, password);
