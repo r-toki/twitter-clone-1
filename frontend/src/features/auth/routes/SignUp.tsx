@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { Form, InputField } from '@/components/Form';
 import { AppHeading } from '@/components/Heading';
 
-import * as api from '../api';
 import { Layout } from '../components';
+import { useSignUp } from '../hooks/use-sign-up';
 
 const schema = z
   .object({
@@ -28,8 +28,10 @@ type RegisterValue = {
 };
 
 export const SignUp = () => {
+  const { signUp } = useSignUp();
+
   const onSubmit = ({ name, password }: RegisterValue) => {
-    api.signUp(name, password).then(console.log);
+    signUp(name, password);
   };
 
   return (

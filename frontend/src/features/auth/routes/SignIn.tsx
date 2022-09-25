@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { Form, InputField } from '@/components/Form';
 import { AppHeading } from '@/components/Heading';
 
-import * as api from '../api';
 import { Layout } from '../components';
+import { useSignIn } from '../hooks/use-sign-in';
 
 const schema = z.object({
   name: z
@@ -21,8 +21,10 @@ type RegisterValue = {
 };
 
 export const SignIn = () => {
+  const { signIn } = useSignIn();
+
   const onSubmit = ({ name, password }: RegisterValue) => {
-    api.signIn(name, password).then(console.log);
+    signIn(name, password);
   };
 
   return (

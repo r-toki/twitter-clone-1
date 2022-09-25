@@ -1,8 +1,17 @@
 import Axios, { AxiosError } from 'axios';
 
-import storage from '@/util/storage';
+import { Tokens } from '@/types';
+import storage from '@/utils/storage';
 
-export const axios = Axios.create({ baseURL: import.meta.env.VITE_APP_BACKEND_URL });
+const baseURL = import.meta.env.VITE_APP_BACKEND_URL;
+
+export const axios = Axios.create({
+  baseURL,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+});
 
 axios.interceptors.request.use((config) => {
   if (!config.headers) return config;
@@ -12,17 +21,32 @@ axios.interceptors.request.use((config) => {
     config.headers.authorization = `Bearer ${accessToken}`;
   }
 
-  config.headers['accept'] = 'application/json';
-  config.headers['content-type'] = 'application/json';
-
   return config;
 });
 
 axios.interceptors.response.use(
-  (res) => {
-    return res.data;
-  },
-  (err: AxiosError) => {
+  undefined,
+  async (err: AxiosError & { config: { __retry: boolean } }) => {
+    const refreshToken = storage.get('refresh_token');
+
+    if (err.response?.status === 401 && refreshToken && !err.config.__retry) {
+      err.config.__retry = true;
+
+      const { data } = await Axios.create({
+        baseURL,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      }).put<Tokens>('users/sessions');
+
+      storage.set('access_token', data.accessToken);
+      storage.set('refresh_token', data.refreshToken);
+
+      return axios(err.config);
+    }
+
     return Promise.reject(err);
   },
 );

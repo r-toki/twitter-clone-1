@@ -1,15 +1,16 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-type AppProviderProps = {
-  children: ReactNode;
-};
+import { WithChildren } from '@/types';
 
-export const AppProvider = ({ children }: AppProviderProps) => {
+import { AuthProvider } from './auth';
+
+export const AppProvider = ({ children }: WithChildren) => {
   return (
     <ChakraProvider>
-      <BrowserRouter>{children}</BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>{children}</BrowserRouter>
+      </AuthProvider>
     </ChakraProvider>
   );
 };
