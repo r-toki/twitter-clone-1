@@ -22,7 +22,7 @@ export const LeftSideBar = () => {
 
   const onSignOut = async () => {
     await signOut();
-    navigate('auth/sign-in');
+    navigate('sign-in');
   };
 
   return (

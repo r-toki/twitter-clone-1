@@ -23,14 +23,8 @@ const useAuthProvider = () => {
   const [user, setUser] = useState<User>();
 
   const fetchUser = async () => {
-    try {
-      const { data } = await axios.get<User>('user');
-      setUser(data);
-    } catch {
-      storage.clear('access_token');
-      storage.clear('refresh_token');
-      navigate('auth/sign-in');
-    }
+    const { data } = await axios.get<User>('user');
+    setUser(data);
   };
 
   const signUp = async (name: string, password: string) => {
@@ -64,6 +58,9 @@ const useAuthProvider = () => {
     (async () => {
       try {
         await fetchUser();
+        navigate('/');
+      } catch {
+        navigate('/sign-in');
       } finally {
         setInitialized(true);
       }

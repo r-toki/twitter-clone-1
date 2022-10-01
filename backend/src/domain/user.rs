@@ -33,6 +33,7 @@ impl User {
         refresh_token_hash: Option<String>,
     ) -> anyhow::Result<()> {
         self.refresh_token_hash = refresh_token_hash;
+        self.updated_at = Utc::now();
         self.validate()?;
         Ok(())
     }
